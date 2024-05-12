@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const PORT = 4000;
 app.use(cors());
+app.use(express.static('uploads'))
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -39,7 +40,7 @@ const createFoodTableQuery = `
 
 db.query(createFoodTableQuery, (err, result) => {
     if (err) {
-        console.error('Error creating food table:', err);
+        console.error('Error creating menuitem table:', err);
         return;
     }
     console.log('Food table created successfully');
@@ -91,13 +92,7 @@ app.get('/list',(req,res)=>
     }
 
 
-    // const baseUrl = 'http://localhost:4000'; // Replace this with your base URL
-    // const formattedRows = rows.map(row => ({
-    //   ...row,
-    //   image: baseUrl + '/' + row.image
-      
-    // }));
-    // console.log(image)
+  
     res.status(200).json({success:true,data:rows})
 })
 })
@@ -113,7 +108,7 @@ app.get('/select/:_id',(req,res)=>
 {
     if(err)
     {
-        console.log('error while removing food',err)  
+        console.log('error selecting food',err)  
     {
         return res.status(500).json({error:'Internal server error'})
     }  }
@@ -123,9 +118,8 @@ app.get('/select/:_id',(req,res)=>
     }
 
     const imageData=rows[0].image;
-    res.contentType('images/jpg');
-    res.send(imageData);
-    //res.status(200).json({success:true,data:rows})
+  
+    res.status(200).json({success:true,data:rows})
 })
 })
 
